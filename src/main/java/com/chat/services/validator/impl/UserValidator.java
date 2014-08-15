@@ -5,6 +5,8 @@ import com.chat.model.User;
 import com.chat.services.IUserService;
 import com.chat.services.validator.IUserValidator;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ import java.util.Map;
 /**
  * Represents methods with which you can validate users
  */
+@Service("userValidator")
 public class UserValidator implements IUserValidator {
 
     private static final Logger log = Logger.getLogger(UserValidator.class);

@@ -278,7 +278,7 @@ public class UserServiceTest extends Assert {
      */
     private boolean equalsUsers(User firstUser, User secondUser) {
         boolean result = true;
-        result = result && firstUser.getId().equals(secondUser.getId());
+        result = result && firstUser.getId() == (secondUser.getId());
         result = result && firstUser.getUsername().equals(secondUser.getUsername());
         result = result && firstUser.getPassword().equals(secondUser.getPassword());
         result = result && firstUser.getName().equals(secondUser.getName());
@@ -295,7 +295,6 @@ public class UserServiceTest extends Assert {
      */
     private User createUser(String name, String password, Boolean online) {
         User user = new User();
-        user.setId(new ObjectId());
         user.setName(name);
         user.setPassword(password);
         user.setOnline(online);

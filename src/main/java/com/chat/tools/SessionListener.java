@@ -44,8 +44,8 @@ public class SessionListener extends BaseController implements HttpSessionListen
             User user = getLoggedPerson();
             user.setOnline(false);
             try {
-                userDAO = new UserDAO(new Mongo(), new Morphia(), DB_NAME);
-            } catch (UnknownHostException e) {
+                userDAO = new UserDAO();
+            } catch (Exception e) {
                 e.printStackTrace();
                 log.error("cannot create userDAO, " + "dbName = " + DB_NAME);
             }

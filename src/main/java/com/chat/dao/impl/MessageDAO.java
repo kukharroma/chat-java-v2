@@ -3,12 +3,11 @@ package com.chat.dao.impl;
 
 import com.chat.dao.IMessageDAO;
 import com.chat.model.Message;
-import com.google.code.morphia.Morphia;
-import com.google.code.morphia.dao.BasicDAO;
-import com.mongodb.Mongo;
-import com.sun.corba.se.spi.ior.ObjectId;
 import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -17,22 +16,22 @@ import java.util.List;
  * Has one constructor which consists of three objects (instance
  * of Mongo, of Morphia and name of database in  String )
  *
- * @see com.google.code.morphia.dao.BasicDAO
- * @see com.chat.dao.IMessageDAO
  */
-public class MessageDAO extends BasicDAO<Message, ObjectId> implements IMessageDAO {
+@Repository("messageDAO")
+public class MessageDAO implements IMessageDAO {
 
     private static final Logger log = Logger.getLogger(MessageDAO.class);
 
+    @Resource(name = "sessionFactory")
+    private SessionFactory sessionFactory;
+
     /**
-     * Constructor of MessageDAO.
-     *
-     * @param mongo   instance of Mongo
-     * @param morphia instance of Morphia
-     * @param dbName  name of database
+     * Saves a message
+     * @param message message you want to save
      */
-    protected MessageDAO(Mongo mongo, Morphia morphia, String dbName) {
-        super(mongo, morphia, dbName);
+    @Override
+    public void save(Message message) {
+        sessionFactory.getCurrentSession().save(message);
     }
 
     /**
@@ -41,12 +40,13 @@ public class MessageDAO extends BasicDAO<Message, ObjectId> implements IMessageD
      */
     @Override
     public List<Message> getLasHundredMessages() {
-        List<Message> list = getDatastore().createQuery(Message.class).asList();
-        if (list.size() < 100) {
-            return list;
-        } else {
-            return list.subList((list.size() - 100), list.size());
-        }
+//        List<Message> list = getDatastore().createQuery(Message.class).asList();
+//        if (list.size() < 100) {
+//            return list;
+//        } else {
+//            return list.subList((list.size() - 100), list.size());
+//        }
+        return null;
     }
 
     /**
@@ -55,7 +55,8 @@ public class MessageDAO extends BasicDAO<Message, ObjectId> implements IMessageD
      */
     @Override
     public List<Message> getAllMessages() {
-        return getDatastore().createQuery(Message.class).asList();
+//        return getDatastore().createQuery(Message.class).asList();
+        return null;
     }
 
     /**
@@ -67,7 +68,8 @@ public class MessageDAO extends BasicDAO<Message, ObjectId> implements IMessageD
     public List<Message> getMessagesFromSecond(String dateFrom) {
         long longDate = Long.valueOf(dateFrom);
         Date date = new Date(longDate);
-        return getDatastore().createQuery(Message.class).field("date").greaterThan(date).asList();
+//        return getDatastore().createQuery(Message.class).field("date").greaterThan(date).asList();
+        return null;
     }
 
     /**
@@ -75,6 +77,7 @@ public class MessageDAO extends BasicDAO<Message, ObjectId> implements IMessageD
      */
     @Override
     public void deleteAllMessages() {
-        deleteByQuery(getDatastore().createQuery(Message.class));
+//        deleteByQuery(getDatastore().createQuery(Message.class));
+
     }
 }

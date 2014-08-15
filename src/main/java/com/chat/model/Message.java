@@ -2,28 +2,29 @@ package com.chat.model;
 
 
 import com.chat.tools.TimeFormater;
-import com.google.code.morphia.annotations.Id;
-import org.bson.types.ObjectId;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  *
  */
+@Entity
+@Table
 public class Message {
 
     /**
      * id of message
      */
     @Id
-    private ObjectId id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
     /**
      * user who created this message
      */
+    @ManyToOne
     private User sender;
 
     /**
@@ -37,11 +38,11 @@ public class Message {
      */
     private String message;
 
-    public ObjectId getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(int id) {
         this.id = id;
     }
 

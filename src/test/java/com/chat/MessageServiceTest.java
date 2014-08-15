@@ -175,7 +175,7 @@ public class MessageServiceTest extends Assert {
      */
     public boolean equalsMessages(Message first, Message second) {
         boolean result = true;
-        result = result && first.getId().equals(second.getId());
+        result = result && first.getId() == second.getId();
         result = result && first.getDate().equals(second.getDate());
         result = result && first.getMessage().equals(second.getMessage());
         result = result && equalsUsers(first.getSender(), second.getSender());
@@ -192,7 +192,6 @@ public class MessageServiceTest extends Assert {
      */
     private Message createMessage(User user, String mess, Date date) {
         Message message = new Message();
-        message.setId(new ObjectId());
         message.setDate(date);
         message.setSender(user);
         message.setMessage(mess);
@@ -209,7 +208,6 @@ public class MessageServiceTest extends Assert {
      */
     private User createUser(String name, String password, Boolean online) {
         User user = new User();
-        user.setId(new ObjectId());
         user.setName(name);
         user.setPassword(password);
         user.setOnline(online);
@@ -226,7 +224,7 @@ public class MessageServiceTest extends Assert {
      */
     private boolean equalsUsers(User firstUser, User secondUser) {
         boolean result = true;
-        result = result && firstUser.getId().equals(secondUser.getId());
+        result = result && firstUser.getId() == (secondUser.getId());
         result = result && firstUser.getUsername().equals(secondUser.getUsername());
         result = result && firstUser.getPassword().equals(secondUser.getPassword());
         result = result && firstUser.getName().equals(secondUser.getName());

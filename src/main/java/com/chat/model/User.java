@@ -3,25 +3,28 @@ package com.chat.model;
 
 import com.chat.model.authority.AuthorityBean;
 import com.chat.model.authority.GrantedAuthorityImpl;
-import com.google.code.morphia.annotations.Id;
-import org.bson.types.ObjectId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  *
  */
+@Entity
+@Table
 public class User implements UserDetails {
 
     /**
      * user's id
      */
     @Id
-    private ObjectId id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
     /**
      * user's name (or login)
@@ -36,7 +39,8 @@ public class User implements UserDetails {
     /**
      * set of user's roles
      */
-    private Set<AuthorityBean> authorities;
+    @OneToMany
+    private Set<AuthorityBean> authorities = new HashSet<AuthorityBean>();
 
     private boolean isAccountNonExpired = true;
 
@@ -116,11 +120,11 @@ public class User implements UserDetails {
         this.isEnabled = isEnabled;
     }
 
-    public ObjectId getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -1,24 +1,26 @@
 package com.chat.model.authority;
 
 
-import com.google.code.morphia.annotations.Id;
-import org.bson.types.ObjectId;
-
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * Holds one role (one Authority)
  */
+@Entity
+@Table
 public class AuthorityBean implements Serializable{
     /**
      * id of AuthorityBean
      */
     @Id
-    private ObjectId id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
     /**
      * instance of enum Authority
      */
+    @Enumerated
     private Authority authority;
 
     public Authority getAuthority() {
@@ -29,11 +31,11 @@ public class AuthorityBean implements Serializable{
         this.authority = authority;
     }
 
-    public ObjectId getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(int id) {
         this.id = id;
     }
 }

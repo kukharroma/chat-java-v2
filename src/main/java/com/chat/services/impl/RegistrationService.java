@@ -8,6 +8,8 @@ import com.chat.services.IUserService;
 import com.chat.services.validator.IUserValidator;
 import org.apache.log4j.Logger;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
@@ -18,6 +20,8 @@ import java.util.Set;
  * Represents methods with which you can register users
  *
  */
+@Transactional
+@Service
 public class RegistrationService implements IRegistrationService {
 
     private static final Logger log = Logger.getLogger(RegistrationService.class);

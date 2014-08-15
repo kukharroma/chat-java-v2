@@ -3,6 +3,7 @@ package com.chat.model.authority;
 
 import org.springframework.security.core.GrantedAuthority;
 
+
 public class GrantedAuthorityImpl implements GrantedAuthority {
 
     private String role;

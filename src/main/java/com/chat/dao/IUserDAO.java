@@ -2,8 +2,6 @@ package com.chat.dao;
 
 
 import com.chat.model.User;
-import com.google.code.morphia.dao.DAO;
-import com.sun.corba.se.spi.ior.ObjectId;
 
 import java.util.List;
 
@@ -12,7 +10,13 @@ import java.util.List;
  * declare method which will work with messages
  *
  */
-public interface IUserDAO extends DAO<User, ObjectId> {
+public interface IUserDAO {
+
+    /**
+     *
+     * @param user user you want to save
+     */
+    public void save(User user);
 
     /**
      *

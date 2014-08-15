@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 /**
  * Represents methods for work with users
  */
+@Transactional
+@Service
 public class UserService implements IUserService, UserDetailsService {
 
     private static final Logger log = Logger.getLogger(UserService.class);

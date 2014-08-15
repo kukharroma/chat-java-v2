@@ -4,6 +4,8 @@ import com.chat.dao.IMessageDAO;
 import com.chat.model.Message;
 import com.chat.services.IMessageService;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
 /**
  * Represents methods for work with messages
  */
+@Transactional
+@Service
 public class MessageService implements IMessageService {
 
     private static final Logger log = Logger.getLogger(MessageService.class);

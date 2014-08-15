@@ -12,7 +12,13 @@ import java.util.List;
  *You can implement this interface if you want to
  * declare method which will work with users
  */
-public interface IMessageDAO extends DAO<Message, ObjectId> {
+public interface IMessageDAO {
+
+    /**
+     * Saves a message
+     * @param message message you want to save
+     */
+    public void save(Message message);
 
     /**
      * Returns last hundred messages from database

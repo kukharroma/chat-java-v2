@@ -43,7 +43,7 @@ public class ChatController extends BaseController {
     public String chat(ModelMap model) {
         User user = getLoggedPerson();
         user.setOnline(true);
-        userService.save(user);
+        userService.updateOnline(user, true);
         log.info("user : " + user.getName() + " - logged in");
         model.put("name", user.getName());
         return "chat";

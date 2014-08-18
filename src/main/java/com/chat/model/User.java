@@ -39,7 +39,7 @@ public class User implements UserDetails {
     /**
      * set of user's roles
      */
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<AuthorityBean> authorities = new HashSet<AuthorityBean>();
 
     private boolean isAccountNonExpired = true;
@@ -53,6 +53,7 @@ public class User implements UserDetails {
     /**
      * show user is online or offline
      */
+    @Column
     private boolean online = false;
 
     /**

@@ -28,7 +28,7 @@ var MessagesCommonView = Backbone.View.extend({
 
     loadLastSecondMessages: function($this){
         $.ajax({
-            url: "getMessagesFromSecond",
+            url: "getAllMessagesByLastSecond",
             type: "GET",
             contentType: "application/json",
             data : {

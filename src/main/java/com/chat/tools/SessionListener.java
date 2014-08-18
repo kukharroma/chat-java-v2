@@ -49,7 +49,7 @@ public class SessionListener extends BaseController implements HttpSessionListen
                 e.printStackTrace();
                 log.error("cannot create userDAO, " + "dbName = " + DB_NAME);
             }
-            userDAO.save(user);
+            userDAO.updateOnline(user, false);
             log.info("user : " + user.getName() + " - logout");
         }
     }

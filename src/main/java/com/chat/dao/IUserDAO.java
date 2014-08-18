@@ -19,11 +19,22 @@ public interface IUserDAO {
     public void save(User user);
 
     /**
+     * @param user user you want to update
+     */
+    public void update(User user);
+
+    /**
      *
-     * @param username name of user you want to load
+     * @param user user you want to update
+     */
+    public void updateOnline(User user, Boolean online);
+    /**
+     *
+     *
+     * @param name name of user you want to load
      * @return instance of user
      */
-    public User loadUserByUsername(String username);
+    public Object loadUserByUsername(String name);
 
     /**
      *

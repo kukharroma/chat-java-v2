@@ -18,6 +18,17 @@ public interface IUserService {
     public void save(User user);
 
     /**
+     * Updates a user
+     * @param user user you want to update
+     */
+    public void update(User user);
+
+    /**
+     * Updates a user param online
+     * @param user user you want to save
+     */
+    public void updateOnline(User user, Boolean online);
+    /**
      * Returns all users
      *
      * @return  list of users
@@ -35,5 +46,6 @@ public interface IUserService {
      * Deletes all users
      */
     public void deleteAllUsers();
+
 
 }

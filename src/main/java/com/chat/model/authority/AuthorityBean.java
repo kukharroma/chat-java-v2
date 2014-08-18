@@ -20,7 +20,7 @@ public class AuthorityBean implements Serializable{
     /**
      * instance of enum Authority
      */
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Authority authority;
 
     public Authority getAuthority() {

@@ -35,7 +35,7 @@ public class UserService implements IUserService, UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userDAO.loadUserByUsername(username);
+        return (UserDetails) userDAO.loadUserByUsername(username);
     }
 
     /**
@@ -44,6 +44,22 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public void save(User user) {
         userDAO.save(user);
+    }
+
+    /**
+     * @param user user you want to update
+     */
+    @Override
+    public void update(User user) {
+        userDAO.update(user);
+    }
+
+    /**
+     * @param user user you want to update
+     */
+    @Override
+    public void updateOnline(User user, Boolean online) {
+        userDAO.updateOnline(user, online);
     }
 
     /**

@@ -4,6 +4,7 @@ package com.chat.dao.impl;
 import com.chat.dao.IMessageDAO;
 import com.chat.model.Message;
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -13,9 +14,7 @@ import java.util.List;
 
 /**
  * Provides methods that allow you to interact with messaging
- * Has one constructor which consists of three objects (instance
- * of Mongo, of Morphia and name of database in  String )
- *
+ * 
  */
 @Repository("messageDAO")
 public class MessageDAO implements IMessageDAO {
@@ -40,13 +39,8 @@ public class MessageDAO implements IMessageDAO {
      */
     @Override
     public List<Message> getLasHundredMessages() {
-//        List<Message> list = getDatastore().createQuery(Message.class).asList();
-//        if (list.size() < 100) {
-//            return list;
-//        } else {
-//            return list.subList((list.size() - 100), list.size());
-//        }
-        return null;
+        Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from message order by id desc LIMIT 100").addEntity(Message.class);
+        return query.list();
     }
 
     /**
@@ -55,8 +49,8 @@ public class MessageDAO implements IMessageDAO {
      */
     @Override
     public List<Message> getAllMessages() {
-//        return getDatastore().createQuery(Message.class).asList();
-        return null;
+        Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from message").addEntity(Message.class);
+        return query.list();
     }
 
     /**
@@ -68,8 +62,9 @@ public class MessageDAO implements IMessageDAO {
     public List<Message> getMessagesFromSecond(String dateFrom) {
         long longDate = Long.valueOf(dateFrom);
         Date date = new Date(longDate);
-//        return getDatastore().createQuery(Message.class).field("date").greaterThan(date).asList();
-        return null;
+        Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from message where message.date > :date ").addEntity(Message.class);
+        query.setParameter("date", date);
+        return query.list();
     }
 
     /**
@@ -77,7 +72,7 @@ public class MessageDAO implements IMessageDAO {
      */
     @Override
     public void deleteAllMessages() {
-//        deleteByQuery(getDatastore().createQuery(Message.class));
-
+        Query query = sessionFactory.getCurrentSession().createSQLQuery("delete from message");
+        query.executeUpdate();
     }
 }

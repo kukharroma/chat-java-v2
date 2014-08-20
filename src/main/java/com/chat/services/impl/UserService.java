@@ -16,7 +16,6 @@ import java.util.List;
 /**
  * Represents methods for work with users
  */
-@Transactional
 @Service
 public class UserService implements IUserService, UserDetailsService {
 

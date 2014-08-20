@@ -20,7 +20,7 @@ import java.util.Set;
  * Represents methods with which you can register users
  *
  */
-@Transactional
+
 @Service
 public class RegistrationService implements IRegistrationService {
 

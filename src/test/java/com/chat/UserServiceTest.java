@@ -33,9 +33,9 @@ public class UserServiceTest extends Assert {
     @Resource(name = "dataSource")
     private  DataSource dataSource;
 
-    private static Configuration cfg;
+    private Configuration cfg;
 
-    private  Connection conn;
+    private Connection conn;
 
     @Before
     public  void setup() throws Exception {

@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Represents methods for work with messages
  */
-@Transactional
+
 @Service
 public class MessageService implements IMessageService {
 

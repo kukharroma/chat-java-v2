@@ -35,38 +35,6 @@ public class MessageServiceTest extends Assert {
     @Resource(name = "userService")
     private UserService userService;
 
-    private static MongodExecutable mongodExecutable;
-
-    private static MongodProcess mongodProcess;
-
-    /**
-     * Starts in-memory Mongo DB process
-     */
-    @BeforeClass
-    public static void setup() throws Exception {
-        MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
-        mongodExecutable = runtime.prepare(new MongodConfig(Version.V1_6_5, 12345, Network.localhostIsIPv6()));
-        mongodProcess = mongodExecutable.start();
-    }
-
-    /**
-     * Cleans in-memory Mongo DB process
-     */
-    @After
-    public void shutDown() throws Exception {
-        messageService.deleteAllMessages();
-        userService.deleteAllUsers();
-        mongodExecutable.cleanup();
-    }
-
-    /**
-     * Stops in-memory Mongo DB process
-     */
-    @AfterClass
-    public static void mongodStop() {
-        mongodProcess.stop();
-    }
-
     /**
      * Tests saving a message
      */

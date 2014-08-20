@@ -3,9 +3,9 @@ package com.chat.model;
 
 import com.chat.model.authority.AuthorityBean;
 import com.chat.model.authority.GrantedAuthorityImpl;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;

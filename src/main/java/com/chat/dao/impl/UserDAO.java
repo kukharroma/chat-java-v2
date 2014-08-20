@@ -5,6 +5,7 @@ import com.chat.dao.IUserDAO;
 import com.chat.model.User;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Repository;
@@ -29,7 +30,10 @@ public class UserDAO implements IUserDAO {
      * @param user user you want to save
      */
     public void save(User user) {
-        sessionFactory.getCurrentSession().save(user);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(user);
+        session.getTransaction().commit();
     }
 
     /**
@@ -37,7 +41,10 @@ public class UserDAO implements IUserDAO {
      * @param user user you want to save
      */
     public void update(User user) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
         sessionFactory.getCurrentSession().update(user);
+        session.getTransaction().commit();
     }
 
     /**
@@ -47,11 +54,14 @@ public class UserDAO implements IUserDAO {
      */
     @Override
     public void updateOnline(User user, Boolean online) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
         String name = user.getName();
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("update user set user.online = :online where name = :name").addEntity(User.class);
+        Query query = session.createSQLQuery("update user set user.online = :online where name = :name").addEntity(User.class);
         query.setParameter("name", name);
         query.setParameter("online", online);
         query.executeUpdate();
+        session.getTransaction().commit();
     }
 
     /**
@@ -61,8 +71,11 @@ public class UserDAO implements IUserDAO {
      */
     @Override
     public User loadUserByUsername(String name) {
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from user where user.name = :name").addEntity(User.class);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Query query = session.createSQLQuery("select * from user where user.name = :name").addEntity(User.class);
         query.setParameter("name", name);
+        session.getTransaction().commit();
         return (User) query.list().get(0);
     }
 
@@ -72,7 +85,10 @@ public class UserDAO implements IUserDAO {
      */
     @Override
     public List<User> getAllOnlineUser() {
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from user where user.online = :true ").addEntity(User.class);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Query query = session.createSQLQuery("select * from user where user.online = true ").addEntity(User.class);
+        session.getTransaction().commit();
         return query.list();
     }
 
@@ -82,7 +98,10 @@ public class UserDAO implements IUserDAO {
      */
     @Override
     public List<User> getAllUsers() {
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from user ").addEntity(User.class);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Query query = session.createSQLQuery("select * from user ").addEntity(User.class);
+        session.getTransaction().commit();
         return query.list();
     }
 
@@ -91,7 +110,10 @@ public class UserDAO implements IUserDAO {
      */
     @Override
     public void deleteAllUsers() {
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("delete from user");
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Query query = session.createSQLQuery("delete from user");
         query.executeUpdate();
+        session.getTransaction().commit();
     }
 }

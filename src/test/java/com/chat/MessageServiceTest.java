@@ -5,19 +5,20 @@ import com.chat.model.Message;
 import com.chat.model.User;
 import com.chat.services.impl.MessageService;
 import com.chat.services.impl.UserService;
-import de.flapdoodle.embedmongo.MongoDBRuntime;
-import de.flapdoodle.embedmongo.MongodExecutable;
-import de.flapdoodle.embedmongo.MongodProcess;
-import de.flapdoodle.embedmongo.config.MongodConfig;
-import de.flapdoodle.embedmongo.distribution.Version;
-import de.flapdoodle.embedmongo.runtime.Network;
-import org.bson.types.ObjectId;
-import org.junit.*;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
+import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +36,36 @@ public class MessageServiceTest extends Assert {
     @Resource(name = "userService")
     private UserService userService;
 
+    @Resource(name = "&sessionFactory")
+    private LocalSessionFactoryBean sessionFactory;
+
+    @Resource(name = "dataSource")
+    private DataSource dataSource;
+
+    private static Configuration cfg;
+
+    private Connection conn;
+
+    @Before
+    public void setup() throws Exception {
+        if (null == cfg) {
+            cfg = sessionFactory.getConfiguration();
+        }
+
+        conn = dataSource.getConnection();
+        SchemaExport exporter = new SchemaExport(cfg, conn);
+        exporter.execute(true, true, false, true);
+    }
+
+    @After
+    public void teardown() throws Exception {
+        if (null != conn) {
+            conn.createStatement().close();
+            conn.close();
+            conn = null;
+        }
+    }
+
     /**
      * Tests saving a message
      */
@@ -44,8 +75,8 @@ public class MessageServiceTest extends Assert {
         Message message = createMessage(user, "text", new Date());
         List<Message> list = messageService.getAllMessages();
         assertTrue(list.isEmpty());
-        messageService.save(message);
         userService.save(user);
+        messageService.save(message);
         list = messageService.getAllMessages();
         assertTrue(!list.isEmpty());
         assertTrue(equalsMessages(message, list.get(0)));
@@ -60,8 +91,8 @@ public class MessageServiceTest extends Assert {
         Message message = createMessage(user, null, new Date());
         List<Message> list = messageService.getAllMessages();
         assertTrue(list.isEmpty());
-        messageService.save(message);
         userService.save(user);
+        messageService.save(message);
         list = messageService.getAllMessages();
         assertTrue(!list.isEmpty());
         assertTrue(equalsMessages(message, list.get(0)));
@@ -79,6 +110,7 @@ public class MessageServiceTest extends Assert {
         Message message4 = createMessage(user, "message4", new Date());
         Message message5 = createMessage(user, "message5", new Date());
         Message message6 = createMessage(user, "message6", new Date());
+        userService.save(user);
         messageService.save(message1);
         messageService.save(message2);
         messageService.save(message3);
@@ -102,10 +134,13 @@ public class MessageServiceTest extends Assert {
      */
     @Test
     public void testGetLastHundredMessages() {
+        User user = createUser("name", "password", true);
+        userService.save(user);
         for (int k = 0; k < 125; k++) {
-            Message message = createMessage(new User(), "mess" + k, new Date());
+            Message message = createMessage(user, "mess" + k, new Date());
             messageService.save(message);
         }
+
         List<Message> list = messageService.getLasHundredMessages();
         assertEquals(100, list.size());
         assertTrue(list.get(0).getMessage().equals("mess25"));

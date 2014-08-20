@@ -10,12 +10,17 @@ import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Version;
 import de.flapdoodle.embedmongo.runtime.Network;
 import org.bson.types.ObjectId;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.junit.*;
 import org.junit.runner.RunWith;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
+import java.sql.Connection;
 import java.util.Map;
 
 /**
@@ -31,6 +36,36 @@ public class RegistrationServiceTest extends Assert {
 
     @Resource(name = "userService")
     private UserService userService;
+
+    @Resource(name = "&sessionFactory")
+    private LocalSessionFactoryBean sessionFactory;
+
+    @Resource(name = "dataSource")
+    private DataSource dataSource;
+
+    private static Configuration cfg;
+
+    private Connection conn;
+
+    @Before
+    public  void setup() throws Exception {
+        if (null == cfg) {
+            cfg = sessionFactory.getConfiguration();
+        }
+
+        conn = dataSource.getConnection();
+        SchemaExport exporter = new SchemaExport(cfg, conn);
+        exporter.execute(true, true, false, true);
+    }
+
+    @After
+    public  void teardown() throws Exception {
+        if (null != conn) {
+            conn.createStatement().close();
+            conn.close();
+            conn = null;
+        }
+    }
 
     /**
      * Tests registration a user who is valid

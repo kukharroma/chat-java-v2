@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -18,6 +18,7 @@ import java.util.List;
  * Provides methods that allow you to interact with messaging
  * 
  */
+@Transactional
 @Repository("messageDAO")
 public class MessageDAO implements IMessageDAO {
 
@@ -32,7 +33,10 @@ public class MessageDAO implements IMessageDAO {
      */
     @Override
     public void save(Message message) {
-        sessionFactory.getCurrentSession().save(message);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(message);
+        session.getTransaction().commit();
     }
 
     /**
@@ -41,7 +45,10 @@ public class MessageDAO implements IMessageDAO {
      */
     @Override
     public List<Message> getLasHundredMessages() {
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from message order by id desc LIMIT 100").addEntity(Message.class);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Query query = session.createSQLQuery("select * from message order by id desc LIMIT 100").addEntity(Message.class);
+        session.getTransaction().commit();
         return query.list();
     }
 
@@ -51,7 +58,10 @@ public class MessageDAO implements IMessageDAO {
      */
     @Override
     public List<Message> getAllMessages() {
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from message").addEntity(Message.class);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Query query = session.createSQLQuery("select * from message").addEntity(Message.class);
+        session.getTransaction().commit();
         return query.list();
     }
 
@@ -64,8 +74,11 @@ public class MessageDAO implements IMessageDAO {
     public List<Message> getMessagesFromSecond(String dateFrom) {
         long longDate = Long.valueOf(dateFrom);
         Date date = new Date(longDate);
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from message where message.date > :date ").addEntity(Message.class);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Query query = session.createSQLQuery("select * from message where message.date > :date ").addEntity(Message.class);
         query.setParameter("date", date);
+        session.getTransaction().commit();
         return query.list();
     }
 
@@ -74,7 +87,10 @@ public class MessageDAO implements IMessageDAO {
      */
     @Override
     public void deleteAllMessages() {
-        Query query = sessionFactory.getCurrentSession().createSQLQuery("delete from message");
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Query query = session.createSQLQuery("delete from message");
         query.executeUpdate();
+        session.getTransaction().commit();
     }
 }

@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * Provides methods that allow you to interact with users
  */
+@Transactional
 @Repository("userDAO")
 public class UserDAO implements IUserDAO {
 
@@ -100,9 +101,9 @@ public class UserDAO implements IUserDAO {
     public List<User> getAllUsers() {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        Query query = session.createSQLQuery("select * from user ").addEntity(User.class);
+        List<User> resultList = session.createSQLQuery("select * from user ").addEntity(User.class).list();
         session.getTransaction().commit();
-        return query.list();
+        return resultList;
     }
 
     /**

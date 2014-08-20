@@ -50,9 +50,8 @@ public class UserServiceTest extends Assert {
 
     @After
     public  void teardown() throws Exception {
-        userService.deleteAllUsers();
         if (null != conn) {
-            conn.createStatement().execute("SHUTDOWN");
+            conn.createStatement().close();
             conn.close();
             conn = null;
         }
@@ -226,7 +225,7 @@ public class UserServiceTest extends Assert {
     /**
      * Gets all user which are not online
      */
-//    @Test
+    @Test
     public void testGetAllOnlineUsersEmpty() {
         User testUser1 = createUser("testUser1", "password1", false);
         User testUser2 = createUser("testUser2", "password2", false);
@@ -246,7 +245,7 @@ public class UserServiceTest extends Assert {
     /**
      * Tests deleting all users from database
      */
-//    @Test
+    @Test
     public void testDeleteAllUsers() {
         User testUser1 = createUser("testUser1", "password1", false);
         User testUser2 = createUser("testUser2", "password2", false);

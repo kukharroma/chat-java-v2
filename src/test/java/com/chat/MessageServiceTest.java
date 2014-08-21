@@ -60,7 +60,7 @@ public class MessageServiceTest extends Assert {
     @After
     public void teardown() throws Exception {
         if (null != conn) {
-            conn.createStatement().close();
+            conn.createStatement().execute("SHUTDOWN");
             conn.close();
             conn = null;
         }
